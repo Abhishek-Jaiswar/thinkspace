@@ -62,14 +62,14 @@ const Testimonials = () => {
             <Quote className="w-4 h-4" />
             <span>What our writers say</span>
           </div>
-          
+
           <h2 className="text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
             Loved by writers
             <span className="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
               worldwide
             </span>
           </h2>
-          
+
           <p className="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
             Don't just take our word for it. Here's what real writers are saying about their experience with ThinkSpace.
           </p>
@@ -84,7 +84,7 @@ const Testimonials = () => {
             >
               {/* Background Gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600 opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300"></div>
-              
+
               {/* Quote Icon */}
               <div className="absolute top-6 right-6 text-orange-200 group-hover:text-orange-300 transition-colors">
                 <Quote className="w-8 h-8" />
@@ -132,7 +132,17 @@ const Testimonials = () => {
 
         {/* Bottom CTA */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl p-8 text-white">
+          <div className=" bg-gradient-to-br from-neutral-900 via-neutral-800 to-orange-900 relative overflow-hidden rounded-3xl p-8 text-white">
+            {/* Background Elements */}
+            <div className="absolute inset-0">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-orange-400/5 rounded-full blur-3xl"></div>
+            </div>
+
+            {/* Grid Pattern */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+
             <h3 className="text-2xl font-bold mb-4">
               Ready to join them?
             </h3>

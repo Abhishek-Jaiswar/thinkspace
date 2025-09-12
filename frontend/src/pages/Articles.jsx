@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Calendar, User, Clock, Heart, BookOpen, TrendingUp, Star, Eye, Share2, Bookmark, ArrowRight, Sparkles } from 'lucide-react';
 
-const Posts = () => {
+const Articles = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('latest');
-  const [viewMode, setViewMode] = useState('grid');
 
   const categories = ['All', 'Technology', 'Travel', 'Food', 'Lifestyle', 'Business', 'Design'];
 
@@ -40,7 +39,7 @@ const Posts = () => {
       likes: 89,
       views: 1923,
       rating: 4.7,
-      featured: false,
+      featured: true,
       trending: false
     },
     {
@@ -88,7 +87,7 @@ const Posts = () => {
       likes: 97,
       views: 1234,
       rating: 4.6,
-      featured: false,
+      featured: true,
       trending: false
     },
     {
@@ -120,7 +119,7 @@ const Posts = () => {
       likes: 145,
       views: 1890,
       rating: 4.8,
-      featured: false,
+      featured: true,
       trending: false
     },
     {
@@ -514,4 +513,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default Articles;
