@@ -3,10 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 import { LucideMenu, X } from "lucide-react";
 
 const navlinks = [
-    { id: 1, path: "/post", name: "Articles" },
-    { id: 2, path: "/about", name: "About" },
-    { id: 3, path: "/pricing", name: "Pricing" },
-    { id: 4, path: "/dashboard", name: "Dashboard" },
+    { id: 1, path: "/", name: "Home" },
+    { id: 2, path: "/articles", name: "Articles" },
+    { id: 3, path: "/about", name: "About" },
+    { id: 4, path: "/pricing", name: "Pricing" },
+    { id: 5, path: "/dashboard", name: "Dashboard" },
 ];
 
 const Navbar = () => {

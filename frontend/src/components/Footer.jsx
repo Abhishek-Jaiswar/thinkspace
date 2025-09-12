@@ -25,25 +25,18 @@ const Footer = () => {
     ],
     Company: [
       { name: 'About', href: '/about' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Press', href: '/press' },
-      { name: 'Contact', href: '/contact' }
+      { name: 'Blog', href: '/post' },
+      { name: 'Careers', href: '/' },
+      { name: 'Press', href: '/' },
+      { name: 'Contact', href: '/' }
     ],
     Resources: [
-      { name: 'Help Center', href: '/help' },
-      { name: 'Documentation', href: '/docs' },
-      { name: 'Community', href: '/community' },
-      { name: 'Tutorials', href: '/tutorials' },
-      { name: 'Status', href: '/status' }
+      { name: 'Help Center', href: '/' },
+      { name: 'Documentation', href: '/' },
+      { name: 'Community', href: '/' },
+      { name: 'Tutorials', href: '/' },
+      { name: 'Status', href: '/' }
     ],
-    Legal: [
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
-      { name: 'Cookie Policy', href: '/cookies' },
-      { name: 'GDPR', href: '/gdpr' },
-      { name: 'Security', href: '/security' }
-    ]
   };
 
   const socialLinks = [
