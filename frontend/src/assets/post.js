@@ -13,7 +13,8 @@ export const posts = [
             views: 2847,
             rating: 4.9,
             featured: true,
-            trending: true
+            trending: true,
+            published: true
         },
         {
             id: 2,
@@ -29,7 +30,8 @@ export const posts = [
             views: 1923,
             rating: 4.7,
             featured: false,
-            trending: false
+            trending: false,
+            published: true
         },
         {
             id: 3,
@@ -45,7 +47,8 @@ export const posts = [
             views: 1567,
             rating: 4.8,
             featured: false,
-            trending: true
+            trending: true,
+            published: true
         },
         {
             id: 4,
@@ -61,7 +64,8 @@ export const posts = [
             views: 3456,
             rating: 4.9,
             featured: true,
-            trending: true
+            trending: true,
+            published: true
         },
         {
             id: 5,
@@ -77,7 +81,8 @@ export const posts = [
             views: 1234,
             rating: 4.6,
             featured: false,
-            trending: false
+            trending: false,
+            published: true
         },
         {
             id: 6,
@@ -93,7 +98,8 @@ export const posts = [
             views: 2100,
             rating: 4.7,
             featured: false,
-            trending: true
+            trending: true,
+            published: true
         },
         {
             id: 7,
@@ -109,7 +115,8 @@ export const posts = [
             views: 1890,
             rating: 4.8,
             featured: true,
-            trending: false
+            trending: false,
+            published: true
         },
         {
             id: 8,
@@ -125,6 +132,7 @@ export const posts = [
             views: 3120,
             rating: 4.9,
             featured: true,
-            trending: true
+            trending: true,
+            published: true
         }
     ];

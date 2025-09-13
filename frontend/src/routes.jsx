@@ -7,7 +7,7 @@ import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import BlogPost from "./pages/BlogPost";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./admin/Dashboard";
 import Profile from "./pages/Profile";
 import Articles from "./pages/Articles";
 
@@ -30,7 +30,7 @@ export const routes = [
                 element: <Articles />
             },
             {
-                path: 'post/:id',
+                path: 'article/:id',
                 element: <BlogPost />
             },
             {
