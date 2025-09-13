@@ -10,6 +10,11 @@ import BlogPost from "./pages/BlogPost";
 import Dashboard from "./admin/Dashboard";
 import Profile from "./pages/Profile";
 import Articles from "./pages/Articles";
+import BlogEditor from "./pages/dashboard/BlogEditor";
+import ManageArticles from "./pages/dashboard/ManageArticles";
+import Overview from "./pages/dashboard/Overview";
+import Analytics from "./pages/dashboard/Analytics";
+import Earnings from "./pages/dashboard/Earnings";
 
 export const routes = [
     {
@@ -38,14 +43,32 @@ export const routes = [
                 element: <Pricing />
             },
             {
-                path: 'dashboard',
-                element: <Dashboard />
-            },
-            {
                 path: 'profile',
                 element: <Profile />
             },
         ],
+    },
+    {
+        path: '/dashboard',
+        element: <Dashboard />,
+        children: [
+            {
+                index: true,
+                element: <Overview />
+            },
+            {
+                path: 'manage-articles',
+                element: <ManageArticles />
+            },
+            {
+                path: 'analytics',
+                element: <Analytics />
+            },
+            {
+                path: 'earnings',
+                element: <Earnings />
+            },
+        ]
     },
     {
         path: '/login',
@@ -54,5 +77,9 @@ export const routes = [
     {
         path: '/signup',
         element: <Signup />
+    },
+    {
+        path: '/dashboard/create',
+        element: <BlogEditor />
     },
 ]
