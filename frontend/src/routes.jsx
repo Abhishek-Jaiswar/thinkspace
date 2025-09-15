@@ -68,6 +68,10 @@ export const routes = [
                 path: 'earnings',
                 element: <Earnings />
             },
+            {
+                path: 'create',
+                element: <BlogEditor />
+            },
         ]
     },
     {
@@ -78,8 +82,5 @@ export const routes = [
         path: '/signup',
         element: <Signup />
     },
-    {
-        path: '/dashboard/create',
-        element: <BlogEditor />
-    },
+
 ]

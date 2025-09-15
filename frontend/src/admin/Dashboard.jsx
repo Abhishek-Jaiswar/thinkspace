@@ -5,17 +5,17 @@ import { Outlet } from 'react-router-dom';
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <div className="w-full mx-auto">
+    <div className="min-h-screen bg-neutral-50 ">
+      <div className="w-full mx-auto border-r-2 border-zinc-200">
         <div className="flex">
           {/* Sidebar */}
-          <div className="lg:w-[16rem] w-[14rem] h-[90.99vh] border-r-2 border-zinc-200 fixed">
+          <div className="lg:w-[16rem] w-[14rem] h-full fixed border-r-2 border-zinc-200">
             <Sidebar />
           </div>
 
           {/* Main Content */}
           <div className=" lg:ml-[16rem] ml-[14rem] w-full ">
-            <div className='fixed w-full'>
+            <div className='fixed w-full z-30'>
               <Header />
             </div>
             <main className='mt-[48px] p-4'>

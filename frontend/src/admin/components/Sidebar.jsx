@@ -12,8 +12,14 @@ const navigations = [
 const Sidebar = () => {
 
     return (
-        <div className=" ">
-            <div className=" p-6 ">
+        <div className="  ">
+            <div className=" p-6 py-2 space-y-6">
+                <div className="flex items-center gap-2">
+                    <img className="w-8" src="/globe.svg" alt="logo" />
+                    <h1 className="text-lg font-bold text-orange-500">
+                        Think<span className="text-neutral-950">Space</span>
+                    </h1>
+                </div>
                 <nav className="space-y-2">
                     {navigations.map((link) => {
                         const IconComponent = link.icon;
