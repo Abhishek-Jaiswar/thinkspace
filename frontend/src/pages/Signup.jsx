@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Github, Twitter, Check } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,8 +14,9 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     agreeToTerms: false,
-    subscribeNewsletter: true
   });
+
+  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -23,25 +26,39 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // ...existing code...
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle signup logic here
-    console.log('Signup data:', formData);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/api/user/register',
+        formData,
+        { withCredentials: true }
+      );
+
+      if (response.data.status === 200) {
+        navigate('/login')
+      }
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const passwordRequirements = [
     { text: 'At least 8 characters', met: formData.password.length >= 8 },
-    { text: 'One uppercase letter', met: /[A-Z]/.test(formData.password) },
-    { text: 'One lowercase letter', met: /[a-z]/.test(formData.password) },
-    { text: 'One number', met: /\d/.test(formData.password) }
+    // { text: 'One uppercase letter', met: /[A-Z]/.test(formData.password) },
+    // { text: 'One lowercase letter', met: /[a-z]/.test(formData.password) },
+    // { text: 'One number', met: /\d/.test(formData.password) }
   ];
 
   const isPasswordValid = passwordRequirements.every(req => req.met);
+
   const doPasswordsMatch = formData.password === formData.confirmPassword && formData.confirmPassword.length > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-orange-50/30 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-orange-50/30 flex items-center justify-center px-4">
+      <div className="max-w-7xl lg:mt-0 mt-10 w-full lg:flex mx-auto items-center justify-center gap-44">
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-3 mb-6">
@@ -142,20 +159,18 @@ const Signup = () => {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              
+
               {/* Password Requirements */}
               {formData.password && (
                 <div className="mt-3 space-y-2">
                   {passwordRequirements.map((req, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                        req.met ? 'bg-green-500' : 'bg-neutral-200'
-                      }`}>
+                      <div className={`w-4 h-4 rounded-full flex items-center justify-center ${req.met ? 'bg-green-500' : 'bg-neutral-200'
+                        }`}>
                         {req.met && <Check className="w-3 h-3 text-white" />}
                       </div>
-                      <span className={`text-sm ${
-                        req.met ? 'text-green-600' : 'text-neutral-500'
-                      }`}>
+                      <span className={`text-sm ${req.met ? 'text-green-600' : 'text-neutral-500'
+                        }`}>
                         {req.text}
                       </span>
                     </div>
@@ -178,13 +193,12 @@ const Signup = () => {
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   required
-                  className={`w-full pl-12 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-colors ${
-                    formData.confirmPassword && doPasswordsMatch
-                      ? 'border-green-500 focus:border-green-500 focus:ring-green-200'
-                      : formData.confirmPassword && !doPasswordsMatch
+                  className={`w-full pl-12 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-colors ${formData.confirmPassword && doPasswordsMatch
+                    ? 'border-green-500 focus:border-green-500 focus:ring-green-200'
+                    : formData.confirmPassword && !doPasswordsMatch
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-200'
                       : 'border-neutral-300 focus:border-orange-500 focus:ring-orange-200'
-                  }`}
+                    }`}
                   placeholder="Confirm your password"
                 />
                 <button
@@ -222,19 +236,6 @@ const Signup = () => {
                   </Link>
                 </span>
               </label>
-
-              <label className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  name="subscribeNewsletter"
-                  checked={formData.subscribeNewsletter}
-                  onChange={handleInputChange}
-                  className="w-4 h-4 text-orange-600 border-neutral-300 rounded focus:ring-orange-500 mt-1"
-                />
-                <span className="text-sm text-neutral-700">
-                  Subscribe to our newsletter for writing tips and updates
-                </span>
-              </label>
             </div>
 
             {/* Signup Button */}
@@ -247,53 +248,28 @@ const Signup = () => {
               <ArrowRight className="w-5 h-5" />
             </button>
           </form>
-
-          {/* Divider */}
-          <div className="my-8">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-neutral-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-neutral-500">Or continue with</span>
-              </div>
-            </div>
+          {/* Login Link */}
+          <div className="text-center mt-8">
+            <p className="text-neutral-600">
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="text-orange-600 hover:text-orange-700 font-semibold transition-colors"
+              >
+                Sign in
+              </Link>
+            </p>
           </div>
 
-          {/* Social Signup */}
-          <div className="space-y-3">
-            <button className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-neutral-300 rounded-xl hover:bg-neutral-50 transition-colors">
-              <Github className="w-5 h-5" />
-              <span className="font-medium text-neutral-700">Continue with GitHub</span>
-            </button>
-            <button className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-neutral-300 rounded-xl hover:bg-neutral-50 transition-colors">
-              <Twitter className="w-5 h-5" />
-              <span className="font-medium text-neutral-700">Continue with Twitter</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Login Link */}
-        <div className="text-center mt-8">
-          <p className="text-neutral-600">
-            Already have an account?{' '}
+          {/* Back to Home */}
+          <div className="text-center mt-4">
             <Link
-              to="/login"
-              className="text-orange-600 hover:text-orange-700 font-semibold transition-colors"
+              to="/"
+              className="text-neutral-500 hover:text-neutral-700 text-sm transition-colors"
             >
-              Sign in
+              ← Back to home
             </Link>
-          </p>
-        </div>
-
-        {/* Back to Home */}
-        <div className="text-center mt-4">
-          <Link
-            to="/"
-            className="text-neutral-500 hover:text-neutral-700 text-sm transition-colors"
-          >
-            ← Back to home
-          </Link>
+          </div>
         </div>
       </div>
     </div>

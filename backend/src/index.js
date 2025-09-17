@@ -4,9 +4,6 @@ import { configDotenv } from "dotenv";
 configDotenv()
 
 const PORT = process.env.PORT || 8000
-console.log(PORT);
-
-console.log(process.env.MONGODB_URI);
 
 const startServer = async () => {
     try {

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Github, Twitter } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import axios from 'axios';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    rememberMe: false
   });
 
   const handleInputChange = (e) => {
@@ -18,9 +18,21 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/api/user/login',
+        formData,
+        { withCredentials: true }
+      );
+
+      if (response.data.status === 200) {
+        return
+      }
+    } catch (error) {
+      console.error(error)
+    }
     console.log('Login data:', formData);
   };
 
@@ -92,16 +104,6 @@ const Login = () => {
 
               {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="rememberMe"
-                    checked={formData.rememberMe}
-                    onChange={handleInputChange}
-                    className="w-4 h-4 text-orange-600 border-neutral-300 rounded focus:ring-orange-500"
-                  />
-                  <span className="ml-2 text-sm text-neutral-700">Remember me</span>
-                </label>
                 <Link
                   to="/forgot-password"
                   className="text-sm text-orange-600 hover:text-orange-700 font-medium transition-colors"
