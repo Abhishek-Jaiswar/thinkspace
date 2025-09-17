@@ -4,10 +4,15 @@ import JWT from 'jsonwebtoken'
 
 export const registerUser = async (req, res) => {
     try {
+<<<<<<< HEAD
         const { firstName, lastName, email, password, confirmPassword, agreeToTerms } = req.body;
         console.log(req.body);
 
         if (!firstName || !lastName || !email || !password || !confirmPassword) {
+=======
+        const { firstname, lastname, email, password, confirmPassword } = req.body;
+        if (!firstname || !lastname || !email || !password || !confirmPassword) {
+>>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
             return res.status(400).json({
                 message: "All fields are required",
                 success: false,
@@ -32,11 +37,18 @@ export const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(confirmPassword, 10)
 
         const user = await User.create({
+<<<<<<< HEAD
             firstName,
             lastName,
             email,
             password: hashedPassword,
             agreeToTerms
+=======
+            firstname,
+            lastname,
+            email,
+            password: hashedPassword,
+>>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
         })
 
         return res.status(201).json({
@@ -59,8 +71,11 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
+<<<<<<< HEAD
         console.log(req.body);
         
+=======
+>>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
         if (!email || !password) {
             return res.status(400).json({
                 message: "All fields are required",
@@ -132,6 +147,7 @@ export const loginUser = async (req, res) => {
 }
 
 export const logout = (_, res) => {
+<<<<<<< HEAD
     try {
         res.clearCookie('token', {
             httpOnly: true,
@@ -149,4 +165,23 @@ export const logout = (_, res) => {
             message: "Something went wrong during logout"
         });
     }
+=======
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production'
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logout successfully"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong during logout"
+    });
+  }
+>>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
 }
