@@ -11,14 +11,9 @@ app.use(cors({
     credentials: true
 }))
 
-// This is body parser middleware it will parse the incoming data from frontend into json
 app.use(express.json())
 
-// We may implement searching trough all the available posts in db so we can use this middleware to get the querries from the url.
 app.use(express.urlencoded({ extended: true }));
-
-// Here we'll configure all the relevent routes
-
 
 app.use("/api/user", userRoute)
 
