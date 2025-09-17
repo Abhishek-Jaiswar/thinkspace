@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import { ImageIcon, Upload, X } from 'lucide-react'
 
-const FileUpload = (onFileSelect, onFileRemove, accept = 'image/*', maxSize = 1) => {
+const FileUpload = ({ onFileSelect, onFileRemove, accept = 'image/*', maxSize = 1 }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [previewURL, setPreviewURL] = useState(null);

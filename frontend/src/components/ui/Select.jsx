@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Select = ({ setOption, option }) => {
+const Select = ({ setCategory, category }) => {
     const options = [
         { value: "", label: "Choose a category" },
         { value: "tech", label: "Technology" },
@@ -16,8 +16,8 @@ const Select = ({ setOption, option }) => {
                 name="category"
                 id="category"
                 className='w-full px-3 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-orange-300 focus:border-orange-500 outline-none mt-2'
-                value={option}
-                onChange={(e) => setOption(e.target.value)}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
             >
                 {options.map((option) => (
                     <option

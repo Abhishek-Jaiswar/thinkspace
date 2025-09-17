@@ -1,6 +1,6 @@
 import React from 'react'
 import { BarChart3, BookOpen, DollarSign, TrendingUp, } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const navigations = [
     { id: 'overview', label: 'Overview', icon: BarChart3, path: "/dashboard" },
@@ -13,12 +13,14 @@ const Sidebar = () => {
 
     return (
         <div className="  ">
-            <div className=" p-6 py-2 space-y-6">
-                <div className="flex items-center gap-2">
-                    <img className="w-8" src="/globe.svg" alt="logo" />
-                    <h1 className="text-lg font-bold text-orange-500">
-                        Think<span className="text-neutral-950">Space</span>
-                    </h1>
+            <div className=" p-6 py-2 space-y-10">
+                <div className="">
+                    <Link to={'/'} className='flex items-center gap-2'>
+                        <img className="w-8" src="/globe.svg" alt="logo" />
+                        <h1 className="text-lg font-bold text-orange-500">
+                            Think<span className="text-neutral-950">Space</span>
+                        </h1>
+                    </Link>
                 </div>
                 <nav className="space-y-2">
                     {navigations.map((link) => {
