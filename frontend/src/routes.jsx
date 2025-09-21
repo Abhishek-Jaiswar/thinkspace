@@ -15,6 +15,7 @@ import ManageArticles from "./pages/dashboard/ManageArticles";
 import Overview from "./pages/dashboard/Overview";
 import Analytics from "./pages/dashboard/Analytics";
 import Earnings from "./pages/dashboard/Earnings";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export const routes = [
     {
@@ -50,7 +51,9 @@ export const routes = [
     },
     {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: <ProtectedRoute>
+            <Dashboard />
+        </ProtectedRoute>,
         children: [
             {
                 index: true,

@@ -1,20 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { LucideMenu, X } from "lucide-react";
+import ProfileDropdown from "./ProfileDropdown";
+import { AuthContext } from "../context/AuthContext";
 
 const navlinks = [
     { id: 1, path: "/", name: "Home" },
     { id: 2, path: "/articles", name: "Articles" },
     { id: 3, path: "/about", name: "About" },
     { id: 4, path: "/pricing", name: "Pricing" },
-    { id: 5, path: "/dashboard", name: "Dashboard" },
 ];
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const isLoggedIn = false;
-    const username = "Abhishek Jaiswar";
-    const bio = ["food", "travel", "technology"];
+    const { user, isAuthenticated } = useContext(AuthContext);
+    console.log(user);
+
+    const isLoggedIn = isAuthenticated && Boolean(user?.id || user?._id);
+    const username = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim();
+    // const avatar = user.avatar;
 
     const handleOpen = () => setIsOpen((prev) => !prev);
 
@@ -48,20 +52,47 @@ const Navbar = () => {
                 </div>
 
                 {/* Desktop Auth Buttons */}
-                <div className="hidden md:flex items-center gap-5">
-                    <Link
-                        to="/login"
-                        className="text-neutral-700 text-sm hover:text-orange-500 transition"
-                    >
-                        Login
-                    </Link>
-                    <Link
-                        to="/signup"
-                        className="text-neutral-50 text-sm bg-orange-500 px-4 py-2 rounded-md shadow-md hover:bg-orange-400 transition"
-                    >
-                        Start for free
-                    </Link>
-                </div>
+                {isLoggedIn ? (
+                    <div className="hidden md:flex items-center justify-center gap-4">
+                        {(user.role === "admin" || user.role === "upgraded") && (
+                            <Link
+                                to="/dashboard"
+                                className="px-3 py-1.5 rounded-md text-sm font-medium bg-orange-500 text-white hover:bg-orange-600 transition"
+                            >
+                                Dashboard
+                            </Link>
+                        )}
+
+                        <ProfileDropdown />
+
+                        {/* ✅ Always show username & bio */}
+                        <div>
+                            <h1 className="text-sm font-semibold text-neutral-700">{username}</h1>
+                            <Link to={'/profile'}>
+                                <p className="text-xs text-neutral-400">
+                                    {Array.isArray(user.bio) && user.bio.length > 0
+                                        ? user.bio.join(", ")
+                                        : "Complete your profile"}
+                                </p>
+                            </Link>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="hidden md:flex items-center gap-5">
+                        <Link
+                            to="/login"
+                            className="text-neutral-700 text-sm hover:text-orange-500 transition"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            to="/signup"
+                            className="text-neutral-50 text-sm bg-orange-500 px-4 py-2 rounded-md shadow-md hover:bg-orange-400 transition"
+                        >
+                            Start for free
+                        </Link>
+                    </div>
+                )}
 
                 {/* Mobile Hamburger Button */}
                 <button
@@ -70,10 +101,10 @@ const Navbar = () => {
                 >
                     {isOpen ? <X size={28} /> : <LucideMenu size={28} />}
                 </button>
-            </div>
+            </div >
 
             {/* Mobile Sidebar */}
-            <div
+            < div
                 className={`fixed top-0 left-0 h-full w-[16rem] bg-orange-50 shadow-lg transform transition-transform duration-300 z-40 ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
@@ -113,24 +144,43 @@ const Navbar = () => {
 
                     {/* Footer (User Info / Auth) */}
                     {isLoggedIn ? (
-                        <div className="flex items-center gap-3 px-4 py-3 border-t border-neutral-200">
-                            <div className="w-12 h-12 rounded-full border border-neutral-200 overflow-hidden">
-                                <img className="w-full h-full object-cover" src="./globe.svg" alt="user" />
-                            </div>
-                            <div>
-                                <h1 className="text-sm font-semibold text-neutral-700">{username}</h1>
-                                <p className="text-xs text-neutral-500">
-                                    {bio.join(", ")}
-                                </p>
+                        <div className="flex flex-col gap-3 px-4 py-3 border-t border-neutral-200">
+                            {/* ✅ Show Dashboard only for admin/upgraded */}
+                            {(user.role === "admin") && (
+                                <Link
+                                    to="/dashboard"
+                                    onClick={handleOpen}
+                                    className="px-3 py-2 rounded-md bg-orange-500 text-white text-sm text-center hover:bg-orange-600 transition"
+                                >
+                                    Dashboard
+                                </Link>
+                            )}
+
+                            {/* ✅ User info */}
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-full border overflow-hidden">
+                                    <img
+                                        className="w-full h-full object-cover"
+                                        src={user?.avatar || "./globe.svg"}
+                                        alt={username}
+                                    />
+                                </div>
+                                <div>
+                                    <h1 className="text-sm font-semibold text-neutral-700">{username}</h1>
+                                    <p className="text-xs text-neutral-500">
+                                        {user.bio ? user.bio : "Complete your profile"}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     ) : (
+                        // Guest footer (Login / Signup)
                         <div className="w-full h-12 border-t border-neutral-200 flex items-center justify-center">
-                            <div className=" w-full h-full flex items-center justify-center">
+                            <div className="w-full h-full flex items-center justify-center">
                                 <Link
                                     to="/login"
                                     onClick={handleOpen}
-                                    className=" w-1/2 text-sm text-neutral-700 hover:text-orange-500 transition"
+                                    className="w-1/2 text-sm text-neutral-700 hover:text-orange-500 transition"
                                 >
                                     Login
                                 </Link>
@@ -139,7 +189,7 @@ const Navbar = () => {
                                 <Link
                                     to="/signup"
                                     onClick={handleOpen}
-                                    className=" text-sm text-neutral-50"
+                                    className="text-sm text-neutral-50"
                                 >
                                     Start for free
                                 </Link>
@@ -147,16 +197,18 @@ const Navbar = () => {
                         </div>
                     )}
                 </div>
-            </div>
+            </div >
 
             {/* Overlay (click to close) */}
-            {isOpen && (
-                <div
-                    onClick={handleOpen}
-                    className="fixed inset-0 bg-black/30 backdrop-blur-sm z-30"
-                ></div>
-            )}
-        </nav>
+            {
+                isOpen && (
+                    <div
+                        onClick={handleOpen}
+                        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-30"
+                    ></div>
+                )
+            }
+        </nav >
     );
 };
 

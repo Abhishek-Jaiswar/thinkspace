@@ -9,6 +9,4 @@ const Input = ({ className="", ...props }) => {
     )
 }
 
-Input
-
 export default Input

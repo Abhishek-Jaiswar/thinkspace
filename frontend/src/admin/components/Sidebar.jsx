@@ -1,15 +1,15 @@
 import React from 'react'
-import { BarChart3, BookOpen, DollarSign, TrendingUp, } from 'lucide-react';
+import { BarChart3, BookOpen, DollarSign, TrendingUp, Users, Shield } from 'lucide-react';
 import { Link, NavLink } from 'react-router-dom';
 
-const navigations = [
-    { id: 'overview', label: 'Overview', icon: BarChart3, path: "/dashboard" },
-    { id: 'articles', label: 'Manage Articles', icon: BookOpen, path: "/dashboard/manage-articles" },
-    { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: "/dashboard/analytics" },
-    { id: 'earnings', label: 'Earnings', icon: DollarSign, path: "/dashboard/earnings" }
-];
-
 const Sidebar = () => {
+    
+    const navigations = [
+        { id: 'overview', label: 'Overview', icon: BarChart3, path: "/dashboard" },
+        { id: 'articles', label: 'Manage Articles', icon: BookOpen, path: "/dashboard/manage-articles" },
+        { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: "/dashboard/analytics" },
+        { id: 'earnings', label: 'Earnings', icon: DollarSign, path: "/dashboard/earnings" }
+    ];
 
     return (
         <div className="  ">

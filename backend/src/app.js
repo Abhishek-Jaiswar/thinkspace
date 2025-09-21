@@ -1,6 +1,8 @@
 import express from 'express'
 import userRoute from './routes/user.route.js'
+import postRoute from './routes/post.routes.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 const app = express();
 
@@ -15,11 +17,9 @@ app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/user", userRoute)
+app.use(cookieParser())
 
-app.use("/", (req, res) => {
-    return res.json({
-        message: "I am perfectly working"
-    })
-})
+app.use("/api/user", userRoute)
+app.use('/api/post', postRoute)
+
 export default app;

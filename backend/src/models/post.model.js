@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const postSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
+    content: { type: String, required: true, },
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     authorAvatar: { type: String },
     category: { type: String, required: true },
@@ -15,6 +16,7 @@ const postSchema = new mongoose.Schema({
     trending: { type: Boolean, default: false },
     published: { type: Boolean, default: false },
     draft: { type: Boolean, default: true },
+
 }, { timestamps: true });
 
 // Indexes

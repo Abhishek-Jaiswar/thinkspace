@@ -4,25 +4,13 @@ import JWT from 'jsonwebtoken'
 
 export const registerUser = async (req, res) => {
     try {
-<<<<<<< HEAD
-        const { firstName, lastName, email, password, confirmPassword, agreeToTerms } = req.body;
+        const { firstName, lastName, email, password } = req.body;
         console.log(req.body);
 
-        if (!firstName || !lastName || !email || !password || !confirmPassword) {
-=======
-        const { firstname, lastname, email, password, confirmPassword } = req.body;
-        if (!firstname || !lastname || !email || !password || !confirmPassword) {
->>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
+        if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({
                 message: "All fields are required",
                 success: false,
-            })
-        }
-
-        if (password !== confirmPassword) {
-            res.status(400).json({
-                message: "Password and confirm password do not match",
-                success: false
             })
         }
 
@@ -34,24 +22,16 @@ export const registerUser = async (req, res) => {
             })
         }
 
-        const hashedPassword = await bcrypt.hash(confirmPassword, 10)
+        const hashedPassword = await bcrypt.hash(password, 10)
 
         const user = await User.create({
-<<<<<<< HEAD
             firstName,
             lastName,
             email,
             password: hashedPassword,
-            agreeToTerms
-=======
-            firstname,
-            lastname,
-            email,
-            password: hashedPassword,
->>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
         })
 
-        return res.status(201).json({
+        return res.status(200).json({
             message: "User registered successfully",
             user: {
                 id: user._id,
@@ -59,7 +39,6 @@ export const registerUser = async (req, res) => {
             }
         })
     } catch (error) {
-        console.error(error)
         return res.status(500).json({
             success: false,
             message: "Server error",
@@ -71,11 +50,8 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-<<<<<<< HEAD
         console.log(req.body);
-        
-=======
->>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
+
         if (!email || !password) {
             return res.status(400).json({
                 message: "All fields are required",
@@ -109,6 +85,7 @@ export const loginUser = async (req, res) => {
 
             return res.status(401).json({
                 message: "Invalid credentials",
+                failedLoginAttempts: user.failedLoginAttempts,
                 success: false
             })
         }
@@ -120,7 +97,7 @@ export const loginUser = async (req, res) => {
         const token = JWT.sign({
             id: user._id,
             email: user.email,
-            role: user.role
+            role: user.role || "user"
         },
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
@@ -134,11 +111,20 @@ export const loginUser = async (req, res) => {
 
         return res.status(200).json({
             message: "successfully loggedIn",
-            success: true
+            success: true,
+            user: {
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role,
+                bio: user.bio,
+                location: user.location,
+                createdAt: user.createdAt
+            }
         })
     }
     catch (error) {
-        console.error(error)
         return res.status(500).json({
             message: "Internal server error",
             success: false
@@ -147,7 +133,6 @@ export const loginUser = async (req, res) => {
 }
 
 export const logout = (_, res) => {
-<<<<<<< HEAD
     try {
         res.clearCookie('token', {
             httpOnly: true,
@@ -165,23 +150,76 @@ export const logout = (_, res) => {
             message: "Something went wrong during logout"
         });
     }
-=======
-  try {
-    res.clearCookie('token', {
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production'
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "Logout successfully"
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong during logout"
-    });
-  }
->>>>>>> 725a7b8a06dd4f84f04e1c4e10403ceb359ea497
 }
+
+export const getProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password -failedLoginAttempts -lockUntil");
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+        res.status(200).json({
+            success: true,
+            user: {
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                location: user.location,
+                role: user.role,
+                bio: user.bio,
+                createdAt: user.createdAt
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
+
+
+export const upgradeProfile = async (req, res) => {
+    try {
+        const { id } = req.user;
+        const { bio, role, location } = req.body;
+
+        // Ensure bio is always an array
+        let updatedBio = [];
+        if (typeof bio === "string") {
+            updatedBio = bio.split(",").map(item => item.trim());
+        } else if (Array.isArray(bio)) {
+            updatedBio = bio.map(item => item.trim());
+        }
+
+        if (!bio || !role || !location) {
+            return res.status(409).json({
+                message: "Ohhho, you need to fill the form first",
+                success: false
+            });
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: id },
+            { $set: { bio: updatedBio, role: 'admin', location } },
+            { new: true } // This option returns the updated document
+        );
+
+        if (!updatedUser) {
+            return res.status(401).json({
+                message: "Unauthorized access to profile",
+                success: false
+            });
+        }
+
+        return res.status(200).json({
+            message: "Profile upgraded to user and writer",
+            success: true,
+        });
+    } catch (error) {
+        // Handle the error more gracefully, e.g., logging it
+        console.error(error);
+        return res.status(500).json({
+            message: "An internal server error occurred",
+            success: false
+        });
+    }
+};

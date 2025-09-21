@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
-import axios from 'axios';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { baseUrl } from '../libs/api';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +11,12 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const { user, setUser } = useContext(AuthContext)
+  console.log(user);
+
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -21,19 +29,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/user/login',
-        formData,
-        { withCredentials: true }
-      );
-
-      if (response.data.status === 200) {
-        return
-      }
+      setIsLoading(true)
+      const response = await baseUrl.post('/api/user/login', formData)
+      setUser(response.data.user)
+      navigate('/')
+      toast.success("Login successfull")
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.message || "Failed to login, refresh and try again!")
+    } finally {
+      setIsLoading(false)
     }
-    console.log('Login data:', formData);
   };
 
   return (
@@ -53,7 +58,7 @@ const Login = () => {
 
         <div className='flex flex-col items-center justify-center'>
           {/* Login Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-neutral-200">
+          <div className="bg-white  p-8 border border-neutral-200">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <div>
@@ -117,7 +122,14 @@ const Login = () => {
                 type="submit"
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
               >
-                Sign in
+                {isLoading ? (
+                  <span className='flex items-center justify-center gap-2 text-sm'>
+                    <Loader2 className='text-white w-6 h-6 animate-spin' />
+                    Please wait...
+                  </span>
+                ) : (
+                  <span>Sign In</span>
+                )}
                 <ArrowRight className="w-5 h-5" />
               </button>
             </form>
